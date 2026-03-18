@@ -75,12 +75,34 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 .e-sl{font-size:13px;color:#7ecfff;letter-spacing:3px}
 .e-sn{font-size:clamp(46px,10vw,66px);font-weight:900;color:#ffd700;line-height:1}
 .e-ss{font-size:13px;color:rgba(255,215,0,.65)}
-.e-rank{font-size:clamp(14px,3vw,19px);color:white;margin-bottom:16px;text-align:center;padding:0 18px}
+.e-rank{font-size:clamp(14px,3vw,19px);color:white;margin-bottom:8px;text-align:center;padding:0 18px}
 .e-btns{display:flex;flex-direction:column;align-items:center;gap:10px}
 .btn-retry{background:#1a6fa8;color:white;border:2px solid #7ecfff;padding:clamp(11px,2.2vh,15px) clamp(26px,6vw,44px);font-size:clamp(15px,3.5vw,19px);font-weight:700;font-family:inherit;border-radius:50px;cursor:pointer;min-height:50px}
 .btn-retry:active{transform:scale(.93)}
 .btn-home{background:transparent;color:#7ecfff;border:2px solid rgba(126,207,255,.35);padding:clamp(9px,2vh,12px) clamp(20px,4vw,34px);font-size:clamp(13px,3vw,15px);font-weight:700;font-family:inherit;border-radius:50px;cursor:pointer;min-height:46px}
 .btn-home:active{background:rgba(126,207,255,.12)}
+/* name entry */
+.name-panel{display:flex;flex-direction:column;align-items:center;gap:7px;margin:6px 0 8px;width:100%;padding:0 20px;max-width:340px}
+.name-label{font-size:12px;color:#7ecfff;letter-spacing:2px}
+.name-row{display:flex;gap:8px;width:100%}
+.name-input{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,215,0,.5);border-radius:12px;
+  padding:9px 13px;font-size:clamp(15px,3.5vw,17px);color:white;font-family:inherit;outline:none;min-width:0}
+.name-input::placeholder{color:rgba(255,255,255,.3)}
+.name-input:focus{border-color:#ffd700;background:rgba(255,255,255,.11)}
+.btn-save{background:#ffd700;color:#0a1628;border:none;border-radius:12px;padding:9px 16px;
+  font-size:clamp(14px,3vw,16px);font-weight:900;font-family:inherit;cursor:pointer;white-space:nowrap;min-height:42px}
+.btn-save:active{transform:scale(.92)}
+/* leaderboard */
+.lb-wrap{width:100%;max-width:360px;padding:0 16px}
+.lb-title{font-size:11px;color:#7ecfff;letter-spacing:3px;text-align:center;margin-bottom:5px}
+.lb-list{width:100%;border-collapse:collapse}
+.lb-list tr{border-bottom:1px solid rgba(255,215,0,.1)}
+.lb-list td{padding:4px 5px;font-size:clamp(12px,2.6vw,14px);color:white}
+.lb-list td:first-child{width:26px;text-align:center;font-weight:900;color:#7ecfff}
+.lb-list td:nth-child(3){text-align:right;font-weight:900;color:#ffd700;white-space:nowrap}
+.lb-list tr.lb-me td{background:rgba(255,215,0,.09)}
+.lb-list tr.lb-me td:first-child{color:#ff6b35}
+.lb-list tr.lb-me td:nth-child(2){color:#ffd700}
 </style>
 </head>
 <body>
@@ -117,7 +139,20 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
   <div class="e-title" id="eTitle"></div>
   <div class="e-sbox"><div class="e-sl">💰 收集金幣</div><div class="e-sn" id="eFinal">0</div><div class="e-ss">枚</div></div>
   <div class="e-rank" id="eRank"></div>
-  <div class="e-btns">
+  <!-- name entry -->
+  <div class="name-panel" id="namePanel">
+    <div class="name-label">✏️ 輸入姓名登上排行榜</div>
+    <div class="name-row">
+      <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="最多8個字">
+      <button class="btn-save" onclick="saveScore()">儲存</button>
+    </div>
+  </div>
+  <!-- leaderboard -->
+  <div class="lb-wrap">
+    <div class="lb-title">🏆 TOP 10 排行榜</div>
+    <table class="lb-list" id="lbTable"></table>
+  </div>
+  <div class="e-btns" style="margin-top:12px">
     <button class="btn-retry" onclick="startGame()">🏄 再衝一次！</button>
     <button class="btn-home" onclick="goHome()">🏠 回主畫面</button>
   </div>
@@ -642,9 +677,53 @@ function startGame(){
   lastTs=performance.now();
   frameId=requestAnimationFrame(loop);
 }
+/* ============================================================
+   LEADERBOARD (localStorage)
+============================================================ */
+var LB_KEY='surfmaster_lb_v1';
+var pendingScore=0;
+
+function loadLB(){
+  try{ return JSON.parse(localStorage.getItem(LB_KEY)||'[]'); }catch(e){ return []; }
+}
+function saveLB(lb){
+  try{ localStorage.setItem(LB_KEY, JSON.stringify(lb)); }catch(e){}
+}
+function renderLB(highlightIdx){
+  var lb=loadLB();
+  var tbl=document.getElementById('lbTable');
+  if(!lb.length){ tbl.innerHTML='<tr><td colspan="3" style="text-align:center;color:rgba(255,255,255,.4);padding:10px">還沒有紀錄，快來挑戰！</td></tr>'; return; }
+  var medals=['🥇','🥈','🥉'];
+  tbl.innerHTML=lb.map(function(e,i){
+    var cls=(i===highlightIdx)?'lb-me':'';
+    var rank=medals[i]||(i+1);
+    var name=e.name||'匿名'; 
+    // escape HTML
+    name=name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    var date=e.date||'';
+    return '<tr class="'+cls+'"><td>'+rank+'</td><td>'+name+'<br><span style="font-size:10px;opacity:.45">'+date+'</span></td><td>'+e.score+'枚</td></tr>';
+  }).join('');
+}
+
+function saveScore(){
+  var nameEl=document.getElementById('nameInput');
+  var name=(nameEl.value||'').trim()||'匿名';
+  var now=new Date();
+  var date=(now.getMonth()+1)+'/'+(now.getDate())+' '+(now.getHours())+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  var lb=loadLB();
+  lb.push({name:name, score:pendingScore, date:date});
+  lb.sort(function(a,b){return b.score-a.score;});
+  lb=lb.slice(0,10);
+  var myIdx=lb.findIndex(function(e){return e.name===name&&e.score===pendingScore&&e.date===date;});
+  saveLB(lb);
+  document.getElementById('namePanel').style.display='none';
+  renderLB(myIdx);
+}
+
 function endGame(){
   running=false; if(frameId) cancelAnimationFrame(frameId);
   playFanfare();
+  pendingScore=score;
   document.getElementById('eFinal').textContent=score;
   var t,ti,r;
   if(score>=60){t='🏆';ti='浪金傳說！LEGENDARY!';r='🌟🌟🌟 中角浪金王 🌟🌟🌟';}
@@ -655,6 +734,10 @@ function endGame(){
   document.getElementById('eTrophy').textContent=t;
   document.getElementById('eTitle').textContent=ti;
   document.getElementById('eRank').textContent=r;
+  // reset name input & show name panel
+  document.getElementById('nameInput').value='';
+  document.getElementById('namePanel').style.display='flex';
+  renderLB(-1);
   makeConfetti(); showScreen('endScreen');
 }
 function goHome(){
