@@ -6,12 +6,24 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>SURF MASTER 浪金傳說 - 中角國小</title>
 <style>
+/* ═══ RESET ═══ */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0a1628;
   font-family:'Noto Sans TC',sans-serif;-webkit-user-select:none;user-select:none}
-.screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;z-index:1}
-.screen.active{display:flex}
-#startScreen{background:linear-gradient(180deg,#c0392b 0%,#e67e22 12%,#1a6fa8 38%,#0d3b6e 65%,#0a1628 100%);overflow:hidden}
+
+/* ═══ SCREENS ═══ */
+.screen{display:none;position:fixed;inset:0;z-index:1}
+.screen.active{display:block}
+
+/* ═══ START SCREEN ═══ */
+#startScreen{
+  background:linear-gradient(180deg,#c0392b 0%,#e67e22 12%,#1a6fa8 38%,#0d3b6e 65%,#0a1628 100%);
+  overflow:hidden;
+  display:none; /* overridden by .active */
+}
+#startScreen.active{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
 .s-sun{position:absolute;top:7%;left:50%;transform:translateX(-50%);
   width:clamp(80px,14vw,110px);height:clamp(80px,14vw,110px);border-radius:50%;
   background:radial-gradient(circle,#fff9c4,#ffd700 40%,#ff6b35);
@@ -23,16 +35,23 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 .s-wave:nth-child(2){background:rgba(13,59,110,.8);animation:wM 5s linear infinite reverse;bottom:-25px}
 .s-wave:nth-child(3){background:rgba(10,22,40,.97);animation:wM 6s linear infinite;bottom:-50px}
 @keyframes wM{0%{transform:translateX(-50%)}100%{transform:translateX(0%)}}
-.s-badge{font-size:clamp(10px,2.5vw,13px);color:rgba(255,255,255,.9);letter-spacing:4px;margin-bottom:6px;z-index:2;position:relative;text-shadow:0 1px 4px rgba(0,0,0,.5)}
-.s-title{font-size:clamp(36px,9vw,64px);font-weight:900;color:#ffd700;text-align:center;line-height:1.05;z-index:2;position:relative;
+.s-badge{font-size:clamp(10px,2.5vw,13px);color:rgba(255,255,255,.9);letter-spacing:4px;
+  margin-bottom:6px;z-index:2;position:relative;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.s-title{font-size:clamp(36px,9vw,64px);font-weight:900;color:#ffd700;text-align:center;
+  line-height:1.05;z-index:2;position:relative;
   text-shadow:0 0 24px rgba(255,215,0,.9),3px 3px 0 rgba(0,0,0,.5);animation:tG 2s ease-in-out infinite}
-@keyframes tG{0%,100%{text-shadow:0 0 20px rgba(255,215,0,.8),3px 3px 0 rgba(0,0,0,.5)}50%{text-shadow:0 0 44px #ffd700,3px 3px 0 rgba(0,0,0,.5)}}
-.s-sub{font-size:clamp(15px,3.5vw,22px);color:#7ecfff;font-weight:700;margin-bottom:clamp(8px,2vh,18px);z-index:2;position:relative;text-align:center}
-.s-hero{font-size:clamp(56px,11vw,80px);z-index:2;position:relative;margin-bottom:clamp(6px,1.5vh,12px);animation:hF 2.5s ease-in-out infinite}
+@keyframes tG{0%,100%{text-shadow:0 0 20px rgba(255,215,0,.8),3px 3px 0 rgba(0,0,0,.5)}
+  50%{text-shadow:0 0 44px #ffd700,3px 3px 0 rgba(0,0,0,.5)}}
+.s-sub{font-size:clamp(15px,3.5vw,22px);color:#7ecfff;font-weight:700;
+  margin-bottom:clamp(8px,2vh,18px);z-index:2;position:relative;text-align:center}
+.s-hero{font-size:clamp(56px,11vw,80px);z-index:2;position:relative;
+  margin-bottom:clamp(6px,1.5vh,12px);animation:hF 2.5s ease-in-out infinite}
 @keyframes hF{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-.s-info{color:rgba(255,255,255,.88);font-size:clamp(12px,2.8vw,15px);text-align:center;line-height:1.9;z-index:2;position:relative;margin-bottom:clamp(14px,2.5vh,22px);padding:0 24px}
+.s-info{color:rgba(255,255,255,.88);font-size:clamp(12px,2.8vw,15px);text-align:center;
+  line-height:1.9;z-index:2;position:relative;margin-bottom:clamp(14px,2.5vh,22px);padding:0 24px}
 .s-info b{color:#ffd700}
-.s-ctrl{display:inline-block;margin-top:4px;font-size:.88em;color:rgba(255,255,255,.5);background:rgba(0,0,0,.25);border-radius:20px;padding:3px 14px}
+.s-ctrl{display:inline-block;margin-top:4px;font-size:.88em;color:rgba(255,255,255,.5);
+  background:rgba(0,0,0,.25);border-radius:20px;padding:3px 14px}
 .btn-start{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#0a1628;border:none;
   padding:clamp(12px,2.5vh,18px) clamp(32px,6vw,52px);font-size:clamp(18px,4vw,22px);
   font-weight:900;font-family:inherit;border-radius:50px;cursor:pointer;z-index:2;position:relative;
@@ -40,12 +59,18 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 .btn-start:active{transform:scale(.93)}
 .fc{position:absolute;pointer-events:none;animation:fcR linear infinite;opacity:.65;z-index:1}
 @keyframes fcR{0%{transform:translateY(110vh);opacity:0}8%{opacity:.7}92%{opacity:.7}100%{transform:translateY(-10vh);opacity:0}}
+
+/* ═══ GAME SCREEN ═══ */
 #gameScreen{background:#0a1628}
+#gameScreen.active{display:block}
 #gameCanvas{position:absolute;inset:0;display:block;touch-action:none}
-.hud{position:absolute;top:0;left:0;right:0;padding:clamp(10px,2vw,14px) clamp(10px,2.5vw,18px);
-  display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:30;gap:6px}
+.hud{position:absolute;top:0;left:0;right:0;
+  padding:clamp(10px,2vw,14px) clamp(10px,2.5vw,18px);
+  display:flex;justify-content:space-between;align-items:flex-start;
+  pointer-events:none;z-index:30;gap:6px}
 .hud-box{background:rgba(8,18,35,.9);border:2px solid rgba(255,215,0,.5);border-radius:12px;
-  padding:clamp(6px,1.5vw,10px) clamp(10px,2.2vw,16px);min-width:clamp(64px,13vw,96px);text-align:center}
+  padding:clamp(6px,1.5vw,10px) clamp(10px,2.2vw,16px);
+  min-width:clamp(64px,13vw,96px);text-align:center}
 .hud-label{font-size:clamp(9px,1.8vw,11px);color:#7ecfff;letter-spacing:2px;display:block}
 .hud-val{font-size:clamp(20px,5vw,28px);font-weight:900;color:#ffd700;line-height:1.1;display:block}
 .hud-unit{font-size:clamp(10px,2vw,12px);color:rgba(255,215,0,.65);display:block}
@@ -60,90 +85,152 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
   display:flex;align-items:center;justify-content:center;font-size:clamp(26px,7vw,38px);
   cursor:pointer;touch-action:none;user-select:none;color:white;font-weight:bold}
 .ctrl-btn.active{background:rgba(255,215,0,.35);border-color:#ffd700;transform:scale(.9)}
-.ctrl-label{font-size:clamp(10px,2.2vw,12px);color:rgba(255,255,255,.45);letter-spacing:1.5px;pointer-events:none}
+.ctrl-label{font-size:clamp(10px,2.2vw,12px);color:rgba(255,255,255,.45);
+  letter-spacing:1.5px;pointer-events:none}
 #kbHint{position:absolute;bottom:clamp(14px,2.5vh,20px);left:50%;transform:translateX(-50%);
   background:rgba(8,18,35,.9);border:1px solid rgba(126,207,255,.3);border-radius:20px;
-  padding:7px 18px;font-size:clamp(11px,2vw,13px);color:#7ecfff;pointer-events:none;z-index:30;white-space:nowrap;display:none}
-#endScreen{background:linear-gradient(180deg,#0a1628 0%,#0d3b6e 50%,#0a1628 100%);overflow-y:auto;overflow-x:hidden;justify-content:flex-start;padding:16px 0 32px;-webkit-overflow-scrolling:touch}
-.cw{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  padding:7px 18px;font-size:clamp(11px,2vw,13px);color:#7ecfff;
+  pointer-events:none;z-index:30;white-space:nowrap;display:none}
+
+/* ═══ END SCREEN ═══ */
+#endScreen{
+  background:linear-gradient(180deg,#0a1628 0%,#0d3b6e 55%,#0a1628 100%);
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+#endScreen.active{display:block}
+
+/* confetti stays fixed in viewport */
+.cw{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:2}
 .cp{position:absolute;animation:cF linear infinite}
-@keyframes cF{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-.e-trophy{font-size:clamp(54px,11vw,76px);margin-bottom:6px;animation:tSp .9s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cF{0%{transform:translateY(-30px) rotate(0);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* centred column inside end screen */
+.end-inner{
+  display:flex;flex-direction:column;align-items:center;
+  width:100%;max-width:520px;
+  margin:0 auto;
+  padding:24px 16px 48px;
+  position:relative;z-index:3;
+}
+
+/* trophy */
+.e-trophy{font-size:clamp(52px,10vw,72px);margin-bottom:4px;
+  animation:tSp .9s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes tSp{0%{transform:scale(0) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
-.e-title{font-size:clamp(20px,5vw,36px);font-weight:900;color:#ffd700;text-align:center;padding:0 18px;margin-bottom:8px;text-shadow:0 0 20px rgba(255,215,0,.6)}
-.e-sbox{background:rgba(255,215,0,.09);border:2px solid rgba(255,215,0,.5);border-radius:18px;padding:clamp(12px,3vh,20px) clamp(26px,6vw,46px);text-align:center;margin:10px 0}
-.e-sl{font-size:13px;color:#7ecfff;letter-spacing:3px}
-.e-sn{font-size:clamp(46px,10vw,66px);font-weight:900;color:#ffd700;line-height:1}
-.e-ss{font-size:13px;color:rgba(255,215,0,.65)}
-.e-rank{font-size:clamp(14px,3vw,19px);color:white;margin-bottom:8px;text-align:center;padding:0 18px}
-.e-btns{display:flex;flex-direction:column;align-items:center;gap:10px}
-.btn-retry{background:#1a6fa8;color:white;border:2px solid #7ecfff;padding:clamp(11px,2.2vh,15px) clamp(26px,6vw,44px);font-size:clamp(15px,3.5vw,19px);font-weight:700;font-family:inherit;border-radius:50px;cursor:pointer;min-height:50px}
-.btn-retry:active{transform:scale(.93)}
-.btn-home{background:transparent;color:#7ecfff;border:2px solid rgba(126,207,255,.35);padding:clamp(9px,2vh,12px) clamp(20px,4vw,34px);font-size:clamp(13px,3vw,15px);font-weight:700;font-family:inherit;border-radius:50px;cursor:pointer;min-height:46px}
-.btn-home:active{background:rgba(126,207,255,.12)}
-/* score box compact */
-.e-sbox{padding:clamp(8px,1.8vh,14px) clamp(20px,5vw,36px);margin:6px 0}
+.e-title{font-size:clamp(20px,4.5vw,34px);font-weight:900;color:#ffd700;
+  text-align:center;padding:0 12px;margin-bottom:6px;
+  text-shadow:0 0 20px rgba(255,215,0,.6)}
+
+/* score box */
+.e-sbox{background:rgba(255,215,0,.09);border:2px solid rgba(255,215,0,.45);
+  border-radius:16px;padding:10px 32px;text-align:center;margin:6px 0;width:100%;max-width:280px}
+.e-sl{font-size:12px;color:#7ecfff;letter-spacing:3px}
+.e-sn{font-size:clamp(42px,9vw,60px);font-weight:900;color:#ffd700;line-height:1.1}
+.e-ss{font-size:12px;color:rgba(255,215,0,.6)}
+.e-rank{font-size:clamp(14px,3vw,18px);color:white;margin:4px 0 10px;
+  text-align:center;padding:0 12px}
+
 /* name entry */
-.name-panel{display:flex;flex-direction:column;align-items:center;gap:7px;
-  margin:6px 0 10px;width:100%;padding:0 16px;max-width:360px;box-sizing:border-box}
-.name-label{font-size:12px;color:#7ecfff;letter-spacing:2px}
+.name-panel{width:100%;max-width:400px;margin-bottom:14px}
+.name-label{font-size:12px;color:#7ecfff;letter-spacing:2px;
+  text-align:center;margin-bottom:7px;display:block}
 .name-row{display:flex;gap:8px;width:100%}
 .name-input{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,215,0,.5);
-  border-radius:12px;padding:9px 13px;font-size:clamp(15px,3.5vw,17px);color:white;
+  border-radius:12px;padding:10px 14px;font-size:16px;color:white;
   font-family:inherit;outline:none;min-width:0;-webkit-appearance:none}
 .name-input::placeholder{color:rgba(255,255,255,.3)}
-.name-input:focus{border-color:#ffd700;background:rgba(255,255,255,.11)}
-.btn-save{background:#ffd700;color:#0a1628;border:none;border-radius:12px;padding:9px 16px;
-  font-size:clamp(14px,3vw,16px);font-weight:900;font-family:inherit;cursor:pointer;
-  white-space:nowrap;min-height:42px;flex-shrink:0}
+.name-input:focus{border-color:#ffd700;background:rgba(255,255,255,.12)}
+.btn-save{background:#ffd700;color:#0a1628;border:none;border-radius:12px;
+  padding:10px 18px;font-size:15px;font-weight:900;font-family:inherit;
+  cursor:pointer;white-space:nowrap;min-height:44px;flex-shrink:0}
 .btn-save:active{transform:scale(.92)}
-/* leaderboard wrapper */
-.lb-wrap{width:100%;max-width:380px;padding:0 12px;box-sizing:border-box;margin-bottom:4px}
-.lb-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0 4px}
-.lb-header-title{font-size:13px;font-weight:900;color:#ffd700;letter-spacing:2px;flex:1;text-align:center}
-/* table */
-.lb-list{width:100%;border-collapse:collapse;background:rgba(8,18,35,.7);
-  border-radius:14px;overflow:hidden;border:1px solid rgba(255,215,0,.2)}
-.lb-list thead tr{background:rgba(255,215,0,.12);border-bottom:2px solid rgba(255,215,0,.3)}
-.lb-list thead td{padding:7px 8px;font-size:11px;color:#7ecfff;letter-spacing:2px;font-weight:700}
-.lb-list thead td:first-child{text-align:center;width:36px}
-.lb-list thead td:last-child{text-align:right}
-.lb-list tbody tr{border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s}
-.lb-list tbody tr:last-child{border-bottom:none}
-.lb-list tbody td{padding:8px 8px;font-size:clamp(13px,3vw,15px);color:rgba(255,255,255,.9);vertical-align:middle}
-.lb-list tbody td:first-child{text-align:center;font-weight:900;font-size:16px;width:36px}
-.lb-list tbody td:last-child{text-align:right;font-weight:900;color:#ffd700;white-space:nowrap;font-size:clamp(13px,3vw,15px)}
-.lb-list .lb-date{font-size:10px;color:rgba(255,255,255,.35);display:block;margin-top:1px}
-/* highlight my score */
-.lb-list tbody tr.lb-me{background:rgba(255,215,0,.1)}
-.lb-list tbody tr.lb-me td:first-child{color:#ff6b35}
-.lb-list tbody tr.lb-me td:nth-child(2){color:#ffd700;font-weight:700}
-/* top 3 medals */
-.lb-list tbody tr.lb-top1{background:rgba(255,215,0,.13)}
-.lb-list tbody tr.lb-top2{background:rgba(192,192,192,.08)}
-.lb-list tbody tr.lb-top3{background:rgba(205,127,50,.08)}
-/* empty state */
-.lb-empty{text-align:center;color:rgba(255,255,255,.35);padding:20px;font-size:14px}
+
+/* leaderboard */
+.lb-wrap{width:100%;max-width:440px;margin-bottom:6px}
+.lb-title{font-size:13px;font-weight:900;color:#ffd700;letter-spacing:2px;
+  text-align:center;margin-bottom:10px}
+.lb-table{width:100%;border-collapse:collapse;
+  background:rgba(5,14,28,.75);border-radius:14px;overflow:hidden;
+  border:1px solid rgba(255,215,0,.25)}
+/* header row */
+.lb-table thead tr{background:rgba(255,215,0,.14)}
+.lb-table thead th{padding:9px 10px;font-size:11px;color:#7ecfff;
+  letter-spacing:2px;font-weight:700;border-bottom:2px solid rgba(255,215,0,.3)}
+.lb-table thead th:first-child{width:44px;text-align:center}
+.lb-table thead th:last-child{text-align:right;padding-right:14px}
+/* body rows */
+.lb-table tbody tr{border-bottom:1px solid rgba(255,255,255,.07)}
+.lb-table tbody tr:last-child{border-bottom:none}
+.lb-table tbody td{padding:9px 10px;font-size:14px;color:rgba(255,255,255,.88);vertical-align:middle}
+.lb-table tbody td:first-child{text-align:center;font-size:18px;width:44px}
+.lb-table tbody td:nth-child(2){font-size:14px}
+.lb-table tbody td:last-child{text-align:right;padding-right:14px;
+  font-weight:900;color:#ffd700;white-space:nowrap;font-size:15px}
+.lb-date{font-size:10px;color:rgba(255,255,255,.32);display:block;margin-top:1px}
+/* row states */
+.lb-top1{background:rgba(255,215,0,.14)!important}
+.lb-top2{background:rgba(210,210,210,.07)!important}
+.lb-top3{background:rgba(205,127,50,.09)!important}
+.lb-me{background:rgba(255,215,0,.12)!important}
+.lb-me td:nth-child(2){color:#ffd700!important;font-weight:700}
+/* empty */
+.lb-empty td{text-align:center;color:rgba(255,255,255,.35);padding:22px;font-size:14px}
+
+/* action buttons */
+.e-btns{display:flex;flex-direction:column;align-items:center;gap:10px;
+  margin-top:16px;width:100%;max-width:300px}
+.btn-retry{background:#1a6fa8;color:white;border:2px solid #7ecfff;
+  padding:13px 0;font-size:clamp(15px,3.5vw,18px);font-weight:700;
+  font-family:inherit;border-radius:50px;cursor:pointer;min-height:50px;width:100%}
+.btn-retry:active{transform:scale(.93)}
+.btn-home{background:transparent;color:#7ecfff;
+  border:2px solid rgba(126,207,255,.35);
+  padding:10px 0;font-size:clamp(13px,3vw,15px);font-weight:700;
+  font-family:inherit;border-radius:50px;cursor:pointer;min-height:44px;width:100%}
+.btn-home:active{background:rgba(126,207,255,.1)}
 </style>
 </head>
 <body>
+
+<!-- ═══ START SCREEN ═══ -->
 <div id="startScreen" class="screen active">
   <div id="fcWrap"></div>
   <div class="s-sun"></div>
-  <div class="s-waves"><div class="s-wave"></div><div class="s-wave"></div><div class="s-wave"></div></div>
+  <div class="s-waves">
+    <div class="s-wave"></div><div class="s-wave"></div><div class="s-wave"></div>
+  </div>
   <div class="s-badge">中角國小 × SURF MASTER</div>
   <div class="s-title">浪金傳說</div>
   <div class="s-sub">🌊 WAVE GOLD LEGEND 🌊</div>
   <div class="s-hero">🏄</div>
-  <div class="s-info">操控 <b>中角浪金獵人</b> 在浪上衝刺<br>30秒內收集最多金幣贏得傳說！<br><span class="s-ctrl">📱 左右按鈕 ｜ 💻 方向鍵 / WASD</span></div>
+  <div class="s-info">
+    操控 <b>中角浪金獵人</b> 在浪上衝刺<br>
+    30秒內收集最多金幣贏得傳說！<br>
+    <span class="s-ctrl">📱 左右按鈕 ｜ 💻 方向鍵 / WASD</span>
+  </div>
   <button class="btn-start" onclick="startGame()">🏄 開始衝浪！</button>
 </div>
+
+<!-- ═══ GAME SCREEN ═══ -->
 <div id="gameScreen" class="screen">
   <canvas id="gameCanvas"></canvas>
   <div class="hud">
-    <div class="hud-box"><span class="hud-label">💰 金幣</span><span class="hud-val" id="hScore">0</span><span class="hud-unit">枚</span></div>
-    <div class="hud-box"><span class="hud-label">⏱ 剩餘</span><span class="hud-val hud-timer" id="hTimer">30</span></div>
-    <div class="hud-box"><span class="hud-label">🔥 連擊</span><span class="hud-val" id="hCombo">0</span><span class="hud-unit">連</span></div>
+    <div class="hud-box">
+      <span class="hud-label">💰 金幣</span>
+      <span class="hud-val" id="hScore">0</span>
+      <span class="hud-unit">枚</span>
+    </div>
+    <div class="hud-box">
+      <span class="hud-label">⏱ 剩餘</span>
+      <span class="hud-val hud-timer" id="hTimer">30</span>
+    </div>
+    <div class="hud-box">
+      <span class="hud-label">🔥 連擊</span>
+      <span class="hud-val" id="hCombo">0</span>
+      <span class="hud-unit">連</span>
+    </div>
   </div>
   <div id="mobileControls">
     <div class="ctrl-row">
@@ -154,46 +241,51 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
   </div>
   <div id="kbHint">← → 方向鍵 / WASD · 衝浪去吃金幣！</div>
 </div>
+
+<!-- ═══ END SCREEN ═══ -->
 <div id="endScreen" class="screen">
   <div class="cw" id="confettiWrap"></div>
-  <!-- trophy + title -->
-  <div class="e-trophy" id="eTrophy">🏆</div>
-  <div class="e-title" id="eTitle"></div>
-  <!-- score box -->
-  <div class="e-sbox">
-    <div class="e-sl">💰 本次收集金幣</div>
-    <div class="e-sn" id="eFinal">0</div>
-    <div class="e-ss">枚</div>
-  </div>
-  <div class="e-rank" id="eRank"></div>
-  <!-- name entry -->
-  <div class="name-panel" id="namePanel">
-    <div class="name-label">✏️ 輸入姓名登上排行榜</div>
-    <div class="name-row">
-      <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="最多8個字">
-      <button class="btn-save" onclick="saveScore()">儲存 ✓</button>
+  <div class="end-inner">
+    <div class="e-trophy" id="eTrophy">🏆</div>
+    <div class="e-title" id="eTitle"></div>
+    <div class="e-sbox">
+      <div class="e-sl">💰 本次收集金幣</div>
+      <div class="e-sn" id="eFinal">0</div>
+      <div class="e-ss">枚</div>
     </div>
-  </div>
-  <!-- leaderboard -->
-  <div class="lb-wrap">
-    <div class="lb-header">
-      <div class="lb-header-title">🏆 SURF MASTER 排行榜 TOP 10</div>
+    <div class="e-rank" id="eRank"></div>
+
+    <!-- name entry -->
+    <div class="name-panel" id="namePanel">
+      <span class="name-label">✏️ 輸入姓名登上排行榜</span>
+      <div class="name-row">
+        <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="最多8個字">
+        <button class="btn-save" onclick="saveScore()">儲存 ✓</button>
+      </div>
     </div>
-    <table class="lb-list">
-      <thead><tr>
-        <td>名次</td>
-        <td>玩家</td>
-        <td>金幣</td>
-      </tr></thead>
-      <tbody id="lbBody"></tbody>
-    </table>
-  </div>
-  <!-- buttons -->
-  <div class="e-btns" style="margin-top:14px">
-    <button class="btn-retry" onclick="startGame()">🏄 再衝一次！</button>
-    <button class="btn-home" onclick="goHome()">🏠 回主畫面</button>
+
+    <!-- leaderboard -->
+    <div class="lb-wrap">
+      <div class="lb-title">🏆 SURF MASTER 排行榜 TOP 10</div>
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th>名次</th>
+            <th>玩家</th>
+            <th>金幣</th>
+          </tr>
+        </thead>
+        <tbody id="lbBody"></tbody>
+      </table>
+    </div>
+
+    <div class="e-btns">
+      <button class="btn-retry" onclick="startGame()">🏄 再衝一次！</button>
+      <button class="btn-home" onclick="goHome()">🏠 回主畫面</button>
+    </div>
   </div>
 </div>
+
 <script>
 /* ============================================================
    CANVAS
@@ -211,36 +303,40 @@ window.addEventListener('resize',resize);
 var keys={left:false,right:false};
 var mcDiv=document.getElementById('mobileControls');
 var kbDiv=document.getElementById('kbHint');
-var btnL=document.getElementById('btnL');
-var btnR=document.getElementById('btnR');
-function showMobile(){mcDiv.style.display='flex';kbDiv.style.display='none';}
-function showDesktop(){mcDiv.style.display='none';kbDiv.style.display='block';}
+var btnL =document.getElementById('btnL');
+var btnR =document.getElementById('btnR');
+function showMobile(){ mcDiv.style.display='flex'; kbDiv.style.display='none'; }
+function showDesktop(){ mcDiv.style.display='none'; kbDiv.style.display='block'; }
 if(navigator.maxTouchPoints>0||'ontouchstart' in window) showMobile(); else showDesktop();
 window.addEventListener('touchstart',showMobile,{passive:true});
 document.addEventListener('keydown',function(e){
-  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A'){keys.left=true;e.preventDefault();showDesktop();}
+  if(e.key==='ArrowLeft' ||e.key==='a'||e.key==='A'){keys.left =true;e.preventDefault();showDesktop();}
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D'){keys.right=true;e.preventDefault();showDesktop();}
 });
 document.addEventListener('keyup',function(e){
-  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A') keys.left=false;
+  if(e.key==='ArrowLeft' ||e.key==='a'||e.key==='A') keys.left =false;
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D') keys.right=false;
 });
 function bindBtn(el,side){
-  el.addEventListener('touchstart',function(e){e.preventDefault();keys[side]=true;el.classList.add('active');},{passive:false});
-  el.addEventListener('touchend',function(e){e.preventDefault();keys[side]=false;el.classList.remove('active');},{passive:false});
+  el.addEventListener('touchstart', function(e){e.preventDefault();keys[side]=true; el.classList.add('active');},{passive:false});
+  el.addEventListener('touchend',   function(e){e.preventDefault();keys[side]=false;el.classList.remove('active');},{passive:false});
   el.addEventListener('touchcancel',function(){keys[side]=false;el.classList.remove('active');});
-  el.addEventListener('mousedown',function(e){e.preventDefault();keys[side]=true;el.classList.add('active');});
-  el.addEventListener('mouseup',function(){keys[side]=false;el.classList.remove('active');});
-  el.addEventListener('mouseleave',function(){keys[side]=false;el.classList.remove('active');});
+  el.addEventListener('mousedown',  function(e){e.preventDefault();keys[side]=true; el.classList.add('active');});
+  el.addEventListener('mouseup',    function(){keys[side]=false;el.classList.remove('active');});
+  el.addEventListener('mouseleave', function(){keys[side]=false;el.classList.remove('active');});
 }
 bindBtn(btnL,'left'); bindBtn(btnR,'right');
 var swX=null;
 cv.addEventListener('touchstart',function(e){swX=e.touches[0].clientX;},{passive:true});
-cv.addEventListener('touchmove',function(e){if(swX===null)return;var dx=e.touches[0].clientX-swX;if(Math.abs(dx)>10){keys.left=dx<0;keys.right=dx>0;}},{passive:true});
+cv.addEventListener('touchmove', function(e){
+  if(swX===null)return;
+  var dx=e.touches[0].clientX-swX;
+  if(Math.abs(dx)>10){keys.left=dx<0;keys.right=dx>0;}
+},{passive:true});
 cv.addEventListener('touchend',function(){keys.left=keys.right=false;swX=null;});
 
 /* ============================================================
-   STATE
+   GAME STATE
 ============================================================ */
 var running=false,score=0,combo=0,comboT=0,timeLeft=30;
 var gInt=null,frameId=null,lastTs=0,wT=0;
@@ -253,19 +349,17 @@ var SPEED=420,FRIC=0.80;
    WAVE
 ============================================================ */
 function wY(x,t){
-  return H*0.63+Math.sin(x*0.010+t*1.6)*16+Math.sin(x*0.019-t*2.4)*9+Math.sin(x*0.005+t*0.85)*22;
+  return H*0.63
+    +Math.sin(x*0.010+t*1.6)*16
+    +Math.sin(x*0.019-t*2.4)*9
+    +Math.sin(x*0.005+t*0.85)*22;
 }
 
 /* ============================================================
-   SAFE FILL — always resets shadow before filling
-   This is the KEY fix: shadowBlur must be 0 before any fill
+   SAFE DRAW HELPERS — always clears shadow before fill/stroke
 ============================================================ */
-function sf(color){
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; ctx.fillStyle=color;
-}
-function ss(color,w){
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; ctx.strokeStyle=color; ctx.lineWidth=w;
-}
+function sf(c){ ctx.shadowBlur=0;ctx.shadowColor='transparent';ctx.fillStyle=c; }
+function ss(c,w){ ctx.shadowBlur=0;ctx.shadowColor='transparent';ctx.strokeStyle=c;ctx.lineWidth=w; }
 
 /* ============================================================
    COIN SPAWN
@@ -274,16 +368,17 @@ function spawnCoin(){
   var U=Math.min(W,H)/10;
   var T=[
     {type:0,value:1,r:U*0.44,spd:100+Math.random()*55},
-    {type:1,value:3,r:U*0.50,spd:75+Math.random()*38},
-    {type:2,value:5,r:U*0.46,spd:82+Math.random()*48}
+    {type:1,value:3,r:U*0.50,spd: 75+Math.random()*38},
+    {type:2,value:5,r:U*0.46,spd: 82+Math.random()*48}
   ];
   var rnd=Math.random(), t=rnd<0.6?T[0]:rnd<0.88?T[1]:T[2];
-  coins.push({x:70+Math.random()*(W-140),y:-60,type:t.type,value:t.value,r:t.r,spd:t.spd,
+  coins.push({x:70+Math.random()*(W-140),y:-60,
+    type:t.type,value:t.value,r:t.r,spd:t.spd,
     wob:Math.random()*Math.PI*2,wobS:1.6+Math.random()*2,alive:true});
 }
 
 /* ============================================================
-   DRAW GOLD COIN — pure flat colours, zero gradients
+   DRAW: GOLD COIN
 ============================================================ */
 function drawGoldCoin(x,y,r){
   sf('#b8860b'); ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
@@ -294,68 +389,55 @@ function drawGoldCoin(x,y,r){
 }
 
 /* ============================================================
-   DRAW BAG — pure flat colours
+   DRAW: MONEY BAG
 ============================================================ */
 function drawBag(x,y,r){
-  // body outline
-  sf('#b8860b'); ctx.beginPath(); ctx.arc(x,y+r*0.12,r*0.8,0,Math.PI*2); ctx.fill();
-  // body fill
+  sf('#b8860b'); ctx.beginPath(); ctx.arc(x,y+r*0.12,r*0.80,0,Math.PI*2); ctx.fill();
   sf('#ffd700'); ctx.beginPath(); ctx.arc(x,y+r*0.12,r*0.72,0,Math.PI*2); ctx.fill();
   sf('#ffe566'); ctx.beginPath(); ctx.arc(x,y+r*0.05,r*0.55,0,Math.PI*2); ctx.fill();
-  // knot
-  sf('#cc8800'); ctx.beginPath(); ctx.arc(x,y-r*0.5,r*0.28,0,Math.PI*2); ctx.fill();
-  sf('#ffcc00'); ctx.beginPath(); ctx.arc(x,y-r*0.5,r*0.18,0,Math.PI*2); ctx.fill();
-  // $ symbol — two rectangles (crossbar)
+  sf('#cc8800'); ctx.beginPath(); ctx.arc(x,y-r*0.50,r*0.28,0,Math.PI*2); ctx.fill();
+  sf('#ffcc00'); ctx.beginPath(); ctx.arc(x,y-r*0.50,r*0.18,0,Math.PI*2); ctx.fill();
   sf('#7a4f00');
   var lw=Math.max(2,r*0.11), hs=r*0.32;
-  ctx.fillRect(x-lw/2, y-r*0.08, lw, r*0.44);   // vertical bar
-  ctx.fillRect(x-hs,   y+r*0.03, hs*2, lw);      // lower crossbar
-  ctx.fillRect(x-hs*0.8, y-r*0.08+lw, hs*1.6, lw); // upper crossbar
-  // shine
+  ctx.fillRect(x-lw/2, y-r*0.08, lw, r*0.44);
+  ctx.fillRect(x-hs,   y+r*0.03, hs*2, lw);
+  ctx.fillRect(x-hs*0.8, y-r*0.08+lw, hs*1.6, lw);
   sf('rgba(255,255,220,0.5)'); ctx.beginPath(); ctx.arc(x-r*0.25,y-r*0.1,r*0.2,0,Math.PI*2); ctx.fill();
 }
 
 /* ============================================================
-   DRAW STAR — pure flat colours
+   DRAW: STAR
 ============================================================ */
 function drawStar(x,y,r,angle){
   var inner=r*0.42, pts=5;
-  // outer star dark
   sf('#cc8800');
   ctx.beginPath();
   for(var i=0;i<pts*2;i++){
-    var a=(i*Math.PI/pts)-Math.PI/2+angle;
-    var rd=(i%2===0)?r*1.08:inner*0.9;
+    var a=(i*Math.PI/pts)-Math.PI/2+angle, rd=(i%2===0)?r*1.08:inner*0.9;
     var px2=x+Math.cos(a)*rd, py2=y+Math.sin(a)*rd;
     i===0?ctx.moveTo(px2,py2):ctx.lineTo(px2,py2);
   }
   ctx.closePath(); ctx.fill();
-  // inner star bright
   sf('#ffd700');
   ctx.beginPath();
   for(var i=0;i<pts*2;i++){
-    var a=(i*Math.PI/pts)-Math.PI/2+angle;
-    var rd=(i%2===0)?r:inner;
+    var a=(i*Math.PI/pts)-Math.PI/2+angle, rd=(i%2===0)?r:inner;
     var px2=x+Math.cos(a)*rd, py2=y+Math.sin(a)*rd;
     i===0?ctx.moveTo(px2,py2):ctx.lineTo(px2,py2);
   }
   ctx.closePath(); ctx.fill();
-  // highlight
   sf('#fff9a0');
   ctx.beginPath();
   for(var i=0;i<pts*2;i++){
-    var a=(i*Math.PI/pts)-Math.PI/2+angle;
-    var rd=(i%2===0)?r*0.6:inner*0.55;
+    var a=(i*Math.PI/pts)-Math.PI/2+angle, rd=(i%2===0)?r*0.60:inner*0.55;
     var px2=x+Math.cos(a)*rd, py2=y+Math.sin(a)*rd;
     i===0?ctx.moveTo(px2,py2):ctx.lineTo(px2,py2);
   }
   ctx.closePath(); ctx.fill();
-  // stroke
   ss('#ffaa00',Math.max(1.5,r*0.07));
   ctx.beginPath();
   for(var i=0;i<pts*2;i++){
-    var a=(i*Math.PI/pts)-Math.PI/2+angle;
-    var rd=(i%2===0)?r:inner;
+    var a=(i*Math.PI/pts)-Math.PI/2+angle, rd=(i%2===0)?r:inner;
     var px2=x+Math.cos(a)*rd, py2=y+Math.sin(a)*rd;
     i===0?ctx.moveTo(px2,py2):ctx.lineTo(px2,py2);
   }
@@ -363,105 +445,81 @@ function drawStar(x,y,r,angle){
 }
 
 /* ============================================================
-   DRAW SURFER — pure flat colours, all absolute coords
+   DRAW: SURFER FIGURE — all absolute coords, no translate/scale
 ============================================================ */
 function drawSurferFigure(x,y,tilt,velX){
   var U=Math.max(18,Math.min(W,H)*0.058);
   var dir=(velX>10)?-1:1;
-
   // board shadow
   sf('rgba(0,0,0,0.22)');
   ctx.beginPath(); ctx.ellipse(x+U*0.1,y+U*1.55,U*1.8,U*0.32,tilt,0,Math.PI*2); ctx.fill();
-
-  // board — dark outline
-  sf('#b8860b');
-  ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.88,U*0.44,tilt-0.08,0,Math.PI*2); ctx.fill();
-  // board — main gold
-  sf('#ffd700');
-  ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.75,U*0.36,tilt-0.08,0,Math.PI*2); ctx.fill();
-  // board — white center
-  sf('#ffffff');
-  ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.1,U*0.24,tilt-0.08,0,Math.PI*2); ctx.fill();
-  // board — red stripe
-  sf('#ff4757');
-  ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*0.45,U*0.28,tilt-0.08,0,Math.PI*2); ctx.fill();
-
-  // back leg
+  // board outline
+  sf('#b8860b'); ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.88,U*0.44,tilt-0.08,0,Math.PI*2); ctx.fill();
+  // board gold
+  sf('#ffd700'); ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.75,U*0.36,tilt-0.08,0,Math.PI*2); ctx.fill();
+  // board white
+  sf('#ffffff'); ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*1.1,U*0.24,tilt-0.08,0,Math.PI*2); ctx.fill();
+  // board stripe
+  sf('#ff4757'); ctx.beginPath(); ctx.ellipse(x,y+U*1.15,U*0.45,U*0.28,tilt-0.08,0,Math.PI*2); ctx.fill();
+  // legs
   ss('#1a3a5c',U*0.30); ctx.lineCap='round';
   ctx.beginPath(); ctx.moveTo(x+dir*U*0.2,y+U*0.05); ctx.lineTo(x+dir*U*0.52,y+U*0.62); ctx.lineTo(x+dir*U*0.34,y+U*1.08); ctx.stroke();
-  // front leg
   ctx.beginPath(); ctx.moveTo(x-dir*U*0.15,y+U*0.05); ctx.lineTo(x-dir*U*0.48,y+U*0.58); ctx.lineTo(x-dir*U*0.30,y+U*1.08); ctx.stroke();
-
-  // body dark navy
+  // body
   sf('#1a3a5c');
   ctx.beginPath();
-  ctx.moveTo(x-U*0.42,y-U*0.82);
-  ctx.lineTo(x-U*0.52,y-U*0.4);
-  ctx.lineTo(x-U*0.40,y+U*0.10);
-  ctx.lineTo(x+U*0.40,y+U*0.10);
-  ctx.lineTo(x+U*0.52,y-U*0.4);
-  ctx.lineTo(x+U*0.42,y-U*0.82);
+  ctx.moveTo(x-U*0.42,y-U*0.82); ctx.lineTo(x-U*0.52,y-U*0.4);
+  ctx.lineTo(x-U*0.40,y+U*0.10); ctx.lineTo(x+U*0.40,y+U*0.10);
+  ctx.lineTo(x+U*0.52,y-U*0.4);  ctx.lineTo(x+U*0.42,y-U*0.82);
   ctx.closePath(); ctx.fill();
-
-  // body stripe cyan
+  // body stripe
   sf('#29b6f6');
   ctx.beginPath();
-  ctx.moveTo(x-U*0.12,y-U*0.82);
-  ctx.lineTo(x-U*0.14,y-U*0.4);
-  ctx.lineTo(x-U*0.11,y+U*0.10);
-  ctx.lineTo(x+U*0.11,y+U*0.10);
-  ctx.lineTo(x+U*0.14,y-U*0.4);
-  ctx.lineTo(x+U*0.12,y-U*0.82);
+  ctx.moveTo(x-U*0.12,y-U*0.82); ctx.lineTo(x-U*0.14,y-U*0.4);
+  ctx.lineTo(x-U*0.11,y+U*0.10); ctx.lineTo(x+U*0.11,y+U*0.10);
+  ctx.lineTo(x+U*0.14,y-U*0.4);  ctx.lineTo(x+U*0.12,y-U*0.82);
   ctx.closePath(); ctx.fill();
-
-  // arms — skin
+  // arms
   ss('#FDBCB4',U*0.26); ctx.lineCap='round';
   ctx.beginPath(); ctx.moveTo(x-dir*U*0.38,y-U*0.52); ctx.lineTo(x-dir*U*1.08,y-U*0.12); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x+dir*U*0.38,y-U*0.52); ctx.lineTo(x+dir*U*0.92,y-U*0.28); ctx.stroke();
-
-  // neck
+  // neck + head
   sf('#FDBCB4'); ctx.beginPath(); ctx.arc(x,y-U*0.93,U*0.19,0,Math.PI*2); ctx.fill();
-  // head
   sf('#FDBCB4'); ctx.beginPath(); ctx.arc(x,y-U*1.43,U*0.44,0,Math.PI*2); ctx.fill();
-  // hair dark
+  // hair
   sf('#2c1810'); ctx.beginPath(); ctx.arc(x,y-U*1.56,U*0.44,Math.PI,Math.PI*2); ctx.fill();
   sf('#2c1810'); ctx.beginPath(); ctx.arc(x,y-U*1.43,U*0.50,Math.PI*1.07,Math.PI*1.93); ctx.fill();
-
   // sunglasses frame
   ss('#111111',Math.max(1.5,U*0.07));
   ctx.beginPath(); ctx.ellipse(x-U*0.17,y-U*1.44,U*0.20,U*0.13,0,0,Math.PI*2); ctx.stroke();
   ctx.beginPath(); ctx.ellipse(x+U*0.17,y-U*1.44,U*0.20,U*0.13,0,0,Math.PI*2); ctx.stroke();
-  // lens fill
+  // lens
   sf('rgba(0,100,255,0.45)');
   ctx.beginPath(); ctx.ellipse(x-U*0.17,y-U*1.44,U*0.20,U*0.13,0,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(x+U*0.17,y-U*1.44,U*0.20,U*0.13,0,0,Math.PI*2); ctx.fill();
-  // bridge + temples
+  // bridge+temples
   ss('#111111',Math.max(1,U*0.06));
   ctx.beginPath(); ctx.moveTo(x-U*0.02,y-U*1.44); ctx.lineTo(x+U*0.02,y-U*1.44); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x-U*0.35,y-U*1.44); ctx.lineTo(x-U*0.42,y-U*1.40); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x+U*0.35,y-U*1.44); ctx.lineTo(x+U*0.42,y-U*1.40); ctx.stroke();
-
   // feet
   sf('#0d2a42');
-  ctx.beginPath(); ctx.ellipse(x-dir*U*0.29,y+U*1.08,U*0.36,U*0.19,0.2,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x-dir*U*0.29,y+U*1.08,U*0.36,U*0.19, 0.2,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(x+dir*U*0.20,y+U*1.08,U*0.30,U*0.18,-0.2,0,Math.PI*2); ctx.fill();
 }
 
 /* ============================================================
-   DRAW OCEAN — reset shadow before every fill/stroke
+   DRAW: OCEAN
 ============================================================ */
 function drawOcean(t){
-  // sky — solid colour bands (no gradient needed for iOS compat)
   sf('#08101e'); ctx.fillRect(0,0,W,H*0.20);
   sf('#0d2a50'); ctx.fillRect(0,H*0.18,W,H*0.15);
   sf('#0d3b6e'); ctx.fillRect(0,H*0.30,W,H*0.15);
   sf('#1a6fa8'); ctx.fillRect(0,H*0.42,W,H*0.25);
-
   // sun
   sf('#fff4a0'); ctx.beginPath(); ctx.arc(W*0.74,H*0.13,38,0,Math.PI*2); ctx.fill();
   sf('#ffd700'); ctx.beginPath(); ctx.arc(W*0.74,H*0.13,30,0,Math.PI*2); ctx.fill();
   sf('#fff9c4'); ctx.beginPath(); ctx.arc(W*0.74,H*0.13,18,0,Math.PI*2); ctx.fill();
-
   // stars
   var ss2=[.09,.17,.27,.05,.38,.47,.6,.71,.85,.93,.13,.55,.79];
   var sv2=[.03,.09,.05,.14,.02,.08,.04,.11,.03,.07,.16,.06,.12];
@@ -470,41 +528,35 @@ function drawOcean(t){
     sf('white'); ctx.beginPath(); ctx.arc(ss2[i]*W,sv2[i]*H*0.72,1.5,0,Math.PI*2); ctx.fill();
   }
   ctx.globalAlpha=1;
-
-  // sea body — solid colour fill
+  // sea body
   sf('#1a6fa8');
   ctx.beginPath(); ctx.moveTo(0,H);
   for(var x=0;x<=W;x+=8) ctx.lineTo(x,wY(x,t));
   ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
-
-  // darker deep water overlay
+  // deep water
   sf('#0d3b6e');
   ctx.beginPath(); ctx.moveTo(0,H);
   for(var x=0;x<=W;x+=8){ var wy2=wY(x,t)+H*0.18; ctx.lineTo(x,Math.min(wy2,H)); }
   ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
-
-  // wave crest — NO shadow
+  // crest
   ctx.shadowBlur=0; ctx.shadowColor='transparent';
   ctx.strokeStyle='rgba(126,207,255,0.7)'; ctx.lineWidth=3;
   ctx.beginPath();
   for(var x=0;x<=W;x+=6){ var y2=wY(x,t); x===0?ctx.moveTo(x,y2):ctx.lineTo(x,y2); }
   ctx.stroke();
-
   // 2nd wave
   ctx.globalAlpha=0.35; ctx.strokeStyle='#7ecfff'; ctx.lineWidth=2;
   ctx.beginPath();
   for(var x=0;x<=W;x+=6){ var y2=wY(x,t)+18+Math.sin(x*0.016+t*2.2)*7; x===0?ctx.moveTo(x,y2):ctx.lineTo(x,y2); }
-  ctx.stroke();
-  ctx.globalAlpha=1;
+  ctx.stroke(); ctx.globalAlpha=1;
 }
 
 /* ============================================================
-   DRAW SURFER wrapper
+   DRAW: SURFER WRAPPER
 ============================================================ */
 function drawSurfer(t){
   var wy=wY(sx,t); sy=wy-28;
-  var bob=Math.sin(t*2.6)*4;
-  var px=sx, py=sy+bob;
+  var bob=Math.sin(t*2.6)*4, px=sx, py=sy+bob;
   trail.push({x:px,y:py+20});
   if(trail.length>14) trail.shift();
   for(var i=0;i<trail.length;i++){
@@ -513,32 +565,32 @@ function drawSurfer(t){
   }
   ctx.globalAlpha=1;
   if(Math.abs(svx)>25&&Math.random()>0.55){
-    sparks.push({x:px-Math.sign(svx)*16,y:py+22,vx:-svx*0.3+(Math.random()-0.5)*30,vy:-30-Math.random()*40,life:1,decay:3,r:2+Math.random()*3,spray:true});
+    sparks.push({x:px-Math.sign(svx)*16,y:py+22,
+      vx:-svx*0.3+(Math.random()-0.5)*30,vy:-30-Math.random()*40,
+      life:1,decay:3,r:2+Math.random()*3,spray:true});
   }
   stilt+=((svx/SPEED)*0.28-stilt)*0.14;
   drawSurferFigure(px,py,stilt,svx);
 }
 
 /* ============================================================
-   DRAW COINS
+   DRAW: COINS
 ============================================================ */
 function drawCoins(){
   for(var i=0;i<coins.length;i++){
     var c=coins[i]; if(!c.alive) continue;
     c.wob+=c.wobS*(1/60);
     var cx=c.x+Math.sin(c.wob)*10;
-    // glow ring (NO shadowBlur — use manual halo circle)
-    ctx.globalAlpha=0.35;
+    // glow halo (manual, no shadowBlur)
+    ctx.globalAlpha=0.32;
     sf('#ffd700'); ctx.beginPath(); ctx.arc(cx,c.y,c.r*1.45,0,Math.PI*2); ctx.fill();
     ctx.globalAlpha=1;
-    // draw shape
-    if(c.type===0) drawGoldCoin(cx,c.y,c.r);
+    if(c.type===0)      drawGoldCoin(cx,c.y,c.r);
     else if(c.type===1) drawBag(cx,c.y,c.r);
-    else drawStar(cx,c.y,c.r,c.wob*0.6);
+    else                drawStar(cx,c.y,c.r,c.wob*0.6);
     // badge
     if(c.value>1){
-      var bR=Math.max(10,c.r*0.5);
-      var bX=cx+c.r*0.9, bY=c.y-c.r*0.9;
+      var bR=Math.max(10,c.r*0.5), bX=cx+c.r*0.9, bY=c.y-c.r*0.9;
       sf('rgba(0,0,0,0.88)'); ctx.beginPath(); ctx.arc(bX,bY,bR,0,Math.PI*2); ctx.fill();
       sf('#ffd700'); ctx.font='bold '+Math.round(bR*1.3)+'px sans-serif';
       ctx.textAlign='center'; ctx.textBaseline='middle';
@@ -548,16 +600,18 @@ function drawCoins(){
 }
 
 /* ============================================================
-   SPARKS + FLOATS
+   SPARKS + FLOAT TEXTS
 ============================================================ */
 function burst(x,y){
   for(var i=0;i<10;i++){
-    var a=Math.random()*Math.PI*2,sp=80+Math.random()*160;
-    sparks.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-50,life:1,decay:1.8+Math.random(),r:3+Math.random()*6,spray:false});
+    var a=Math.random()*Math.PI*2, sp=80+Math.random()*160;
+    sparks.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-50,
+      life:1,decay:1.8+Math.random(),r:3+Math.random()*6,spray:false});
   }
 }
 function showFloat(x,y,text,color){
-  floats.push({x:x,y:y,text:text,color:color,life:1,vy:-80,size:Math.max(22,Math.min(W,H)*0.055)});
+  floats.push({x:x,y:y,text:text,color:color,life:1,vy:-80,
+    size:Math.max(22,Math.min(W,H)*0.055)});
 }
 function drawSparks(dt){
   for(var i=sparks.length-1;i>=0;i--){
@@ -579,8 +633,7 @@ function drawFloats(dt){
     ctx.shadowBlur=0; ctx.shadowColor='transparent';
     ctx.font='900 '+f.size+'px sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillStyle=f.color;
-    ctx.fillText(f.text,f.x,f.y);
+    ctx.fillStyle=f.color; ctx.fillText(f.text,f.x,f.y);
   }
   ctx.globalAlpha=1;
 }
@@ -614,7 +667,7 @@ function loop(ts){
   var dt=Math.min((ts-lastTs)/1000,0.05);
   lastTs=ts; wT+=dt;
   var acc=SPEED*dt*2.5;
-  if(keys.left) svx-=acc;
+  if(keys.left)  svx-=acc;
   if(keys.right) svx+=acc;
   svx*=Math.pow(FRIC,dt*60);
   sx+=svx*dt; sx=Math.max(40,Math.min(W-40,sx));
@@ -627,20 +680,18 @@ function loop(ts){
   }
   for(var i=0;i<coins.length;i++) coins[i].y+=coins[i].spd*dt;
   checkHits();
-  // ── RENDER ──
-  // Always reset shadow state at start of frame
+  // render
   ctx.shadowBlur=0; ctx.shadowColor='transparent'; ctx.globalAlpha=1;
   ctx.clearRect(0,0,W,H);
   drawOcean(wT);
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; // reset after ocean
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
   drawCoins();
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; // reset after coins
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
   drawSurfer(wT);
-  ctx.shadowBlur=0; ctx.shadowColor='transparent'; // reset after surfer
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
   drawSparks(dt);
   drawFloats(dt);
-  ctx.shadowBlur=0; ctx.shadowColor='transparent';
-  ctx.globalAlpha=1;
+  ctx.shadowBlur=0; ctx.shadowColor='transparent'; ctx.globalAlpha=1;
   if(timeLeft<=5){
     ctx.fillStyle='rgba(255,71,87,'+(0.07+0.06*Math.sin(wT*9))+')';
     ctx.fillRect(0,0,W,H);
@@ -649,7 +700,7 @@ function loop(ts){
 }
 
 /* ============================================================
-   AUDIO — Web Audio API (zero external files)
+   AUDIO
 ============================================================ */
 var AC=null;
 function getAC(){
@@ -657,9 +708,6 @@ function getAC(){
   if(AC.state==='suspended') AC.resume();
   return AC;
 }
-
-
-
 function playCoin(value){
   var ac=getAC();
   var base=value===1?880:value===3?1046:1318;
@@ -674,10 +722,9 @@ function playCoin(value){
   }
   ding(base,    0.42, 0,    0.18);
   ding(base*2,  0.16, 0,    0.12);
-  if(value>=3) ding(base*1.5, 0.20, 0.07, 0.22);
-  if(value>=5) ding(base*2.5, 0.14, 0.13, 0.18);
+  if(value>=3) ding(base*1.5,0.20,0.07,0.22);
+  if(value>=5) ding(base*2.5,0.14,0.13,0.18);
 }
-
 function playFanfare(){
   var ac=getAC();
   var seq=[523,659,784,1047]; var step=0.13;
@@ -689,6 +736,59 @@ function playFanfare(){
     g.gain.exponentialRampToValueAtTime(0.001,t+step*1.8);
     o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+step*2);
   });
+}
+
+/* ============================================================
+   LEADERBOARD
+============================================================ */
+var LB_KEY='surfmaster_lb_v1';
+var pendingScore=0;
+
+function loadLB(){
+  try{return JSON.parse(localStorage.getItem(LB_KEY)||'[]');}catch(e){return [];}
+}
+function saveLB(lb){
+  try{localStorage.setItem(LB_KEY,JSON.stringify(lb));}catch(e){}
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderLB(highlightIdx){
+  var lb=loadLB();
+  var tbody=document.getElementById('lbBody');
+  if(!lb.length){
+    tbody.innerHTML='<tr class="lb-empty"><td colspan="3">還沒有紀錄，快來挑戰！</td></tr>';
+    return;
+  }
+  var medals=['🥇','🥈','🥉'];
+  var topCls=['lb-top1','lb-top2','lb-top3'];
+  tbody.innerHTML=lb.map(function(e,i){
+    var rowCls=(i===highlightIdx)?'lb-me '+(topCls[i]||''):(topCls[i]||'');
+    var rankCell=medals[i]||('<span style="color:rgba(255,255,255,.45);font-size:14px">'+(i+1)+'</span>');
+    var name=esc(e.name||'匿名');
+    var dateStr=e.date?'<span class="lb-date">'+esc(e.date)+'</span>':'';
+    return '<tr class="'+rowCls+'">'
+      +'<td>'+rankCell+'</td>'
+      +'<td>'+name+dateStr+'</td>'
+      +'<td>'+e.score+'&thinsp;枚</td>'
+      +'</tr>';
+  }).join('');
+}
+
+function saveScore(){
+  var name=(document.getElementById('nameInput').value||'').trim()||'匿名';
+  var now=new Date();
+  var date=(now.getMonth()+1)+'/'+(now.getDate())+' '
+    +now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  var lb=loadLB();
+  lb.push({name:name,score:pendingScore,date:date});
+  lb.sort(function(a,b){return b.score-a.score;});
+  lb=lb.slice(0,10);
+  var myIdx=lb.findIndex(function(e){
+    return e.name===name&&e.score===pendingScore&&e.date===date;
+  });
+  saveLB(lb);
+  document.getElementById('namePanel').style.display='none';
+  renderLB(myIdx);
 }
 
 /* ============================================================
@@ -714,54 +814,6 @@ function startGame(){
   lastTs=performance.now();
   frameId=requestAnimationFrame(loop);
 }
-/* ============================================================
-   LEADERBOARD (localStorage)
-============================================================ */
-var LB_KEY='surfmaster_lb_v1';
-var pendingScore=0;
-
-function loadLB(){
-  try{ return JSON.parse(localStorage.getItem(LB_KEY)||'[]'); }catch(e){ return []; }
-}
-function saveLB(lb){
-  try{ localStorage.setItem(LB_KEY, JSON.stringify(lb)); }catch(e){}
-}
-function renderLB(highlightIdx){
-  var lb=loadLB();
-  var tbody=document.getElementById('lbBody');
-  if(!lb.length){
-    tbody.innerHTML='<tr><td colspan="3" class="lb-empty">還沒有紀錄，快來挑戰！</td></tr>';
-    return;
-  }
-  var medals=['🥇','🥈','🥉'];
-  var topCls=['lb-top1','lb-top2','lb-top3'];
-  tbody.innerHTML=lb.map(function(e,i){
-    var cls=(i===highlightIdx)?'lb-me ':(topCls[i]||'');
-    var rankIcon=medals[i]||('<span style="color:rgba(255,255,255,.5)">'+(i+1)+'</span>');
-    var name=(e.name||'匿名').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    var date=e.date?'<span class="lb-date">'+e.date+'</span>':'';
-    return '<tr class="'+cls+'">'
-      +'<td>'+rankIcon+'</td>'
-      +'<td>'+name+date+'</td>'
-      +'<td>'+e.score+' 枚</td>'
-      +'</tr>';
-  }).join('');
-}
-
-function saveScore(){
-  var nameEl=document.getElementById('nameInput');
-  var name=(nameEl.value||'').trim()||'匿名';
-  var now=new Date();
-  var date=(now.getMonth()+1)+'/'+(now.getDate())+' '+(now.getHours())+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-  var lb=loadLB();
-  lb.push({name:name, score:pendingScore, date:date});
-  lb.sort(function(a,b){return b.score-a.score;});
-  lb=lb.slice(0,10);
-  var myIdx=lb.findIndex(function(e){return e.name===name&&e.score===pendingScore&&e.date===date;});
-  saveLB(lb);
-  document.getElementById('namePanel').style.display='none';
-  renderLB(myIdx);
-}
 
 function endGame(){
   running=false; if(frameId) cancelAnimationFrame(frameId);
@@ -769,35 +821,48 @@ function endGame(){
   pendingScore=score;
   document.getElementById('eFinal').textContent=score;
   var t,ti,r;
-  if(score>=60){t='🏆';ti='浪金傳說！LEGENDARY!';r='🌟🌟🌟 中角浪金王 🌟🌟🌟';}
-  else if(score>=40){t='🥇';ti='金浪高手達成！';r='⭐⭐ 浪金獵人精英 ⭐⭐';}
-  else if(score>=25){t='🥈';ti='衝浪高手！';r='⭐ 浪金獵人見習 ⭐';}
-  else if(score>=10){t='🥉';ti='繼續加油！';r='🌊 衝浪新手成長中 🌊';}
-  else{t='🏄';ti='再衝一次！';r='💪 浪金獵人訓練中 💪';}
+  if(score>=60)     {t='🏆';ti='浪金傳說！LEGENDARY!';  r='🌟🌟🌟 中角浪金王 🌟🌟🌟';}
+  else if(score>=40){t='🥇';ti='金浪高手達成！';         r='⭐⭐ 浪金獵人精英 ⭐⭐';}
+  else if(score>=25){t='🥈';ti='衝浪高手！';             r='⭐ 浪金獵人見習 ⭐';}
+  else if(score>=10){t='🥉';ti='繼續加油！';             r='🌊 衝浪新手成長中 🌊';}
+  else              {t='🏄';ti='再衝一次！';             r='💪 浪金獵人訓練中 💪';}
   document.getElementById('eTrophy').textContent=t;
   document.getElementById('eTitle').textContent=ti;
   document.getElementById('eRank').textContent=r;
-  // reset name input & show name panel
   document.getElementById('nameInput').value='';
   document.getElementById('namePanel').style.display='flex';
+  // scroll to top of end screen
+  document.getElementById('endScreen').scrollTop=0;
   renderLB(-1);
-  makeConfetti(); showScreen('endScreen');
+  makeConfetti();
+  showScreen('endScreen');
 }
+
 function goHome(){
   if(running){running=false;cancelAnimationFrame(frameId);clearInterval(gInt);}
   showScreen('startScreen');
 }
+
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(id).classList.add('active');
 }
+
+/* ============================================================
+   CONFETTI + FLOATING COINS
+============================================================ */
 function makeConfetti(){
   var w=document.getElementById('confettiWrap'); w.innerHTML='';
   var cols=['#ffd700','#ff6b35','#7ecfff','#ff4757','#2ed573','#fff'];
-  for(var i=0;i<50;i++){
+  for(var i=0;i<55;i++){
     var el=document.createElement('div'); el.className='cp';
-    var s=6+Math.random()*9;
-    el.style.cssText='left:'+Math.random()*100+'%;background:'+cols[i%cols.length]+';width:'+s+'px;height:'+s+'px;border-radius:'+(Math.random()>0.5?'50%':'3px')+';animation-duration:'+(1.8+Math.random()*3)+'s;animation-delay:'+Math.random()*2+'s;';
+    var s=6+Math.random()*10;
+    el.style.cssText='left:'+Math.random()*100+'%;top:-20px;'
+      +'background:'+cols[i%cols.length]+';'
+      +'width:'+s+'px;height:'+s+'px;'
+      +'border-radius:'+(Math.random()>0.5?'50%':'3px')+';'
+      +'animation-duration:'+(2+Math.random()*3.5)+'s;'
+      +'animation-delay:'+Math.random()*1.5+'s;';
     w.appendChild(el);
   }
 }
@@ -807,7 +872,10 @@ function makeConfetti(){
   for(var i=0;i<14;i++){
     var el=document.createElement('div'); el.className='fc';
     el.textContent=em[i%em.length];
-    el.style.cssText='left:'+Math.random()*94+'%;font-size:'+(16+Math.random()*20)+'px;animation-duration:'+(5+Math.random()*8)+'s;animation-delay:'+Math.random()*7+'s;';
+    el.style.cssText='left:'+Math.random()*94+'%;'
+      +'font-size:'+(16+Math.random()*20)+'px;'
+      +'animation-duration:'+(5+Math.random()*8)+'s;'
+      +'animation-delay:'+Math.random()*7+'s;';
     w.appendChild(el);
   }
 })();
