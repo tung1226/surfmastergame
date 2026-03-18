@@ -64,7 +64,7 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 #kbHint{position:absolute;bottom:clamp(14px,2.5vh,20px);left:50%;transform:translateX(-50%);
   background:rgba(8,18,35,.9);border:1px solid rgba(126,207,255,.3);border-radius:20px;
   padding:7px 18px;font-size:clamp(11px,2vw,13px);color:#7ecfff;pointer-events:none;z-index:30;white-space:nowrap;display:none}
-#endScreen{background:linear-gradient(180deg,#0a1628 0%,#0d3b6e 50%,#0a1628 100%);overflow:hidden}
+#endScreen{background:linear-gradient(180deg,#0a1628 0%,#0d3b6e 50%,#0a1628 100%);overflow-y:auto;overflow-x:hidden;justify-content:flex-start;padding:16px 0 32px;-webkit-overflow-scrolling:touch}
 .cw{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .cp{position:absolute;animation:cF linear infinite}
 @keyframes cF{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
@@ -81,28 +81,49 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 .btn-retry:active{transform:scale(.93)}
 .btn-home{background:transparent;color:#7ecfff;border:2px solid rgba(126,207,255,.35);padding:clamp(9px,2vh,12px) clamp(20px,4vw,34px);font-size:clamp(13px,3vw,15px);font-weight:700;font-family:inherit;border-radius:50px;cursor:pointer;min-height:46px}
 .btn-home:active{background:rgba(126,207,255,.12)}
+/* score box compact */
+.e-sbox{padding:clamp(8px,1.8vh,14px) clamp(20px,5vw,36px);margin:6px 0}
 /* name entry */
-.name-panel{display:flex;flex-direction:column;align-items:center;gap:7px;margin:6px 0 8px;width:100%;padding:0 20px;max-width:340px}
+.name-panel{display:flex;flex-direction:column;align-items:center;gap:7px;
+  margin:6px 0 10px;width:100%;padding:0 16px;max-width:360px;box-sizing:border-box}
 .name-label{font-size:12px;color:#7ecfff;letter-spacing:2px}
 .name-row{display:flex;gap:8px;width:100%}
-.name-input{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,215,0,.5);border-radius:12px;
-  padding:9px 13px;font-size:clamp(15px,3.5vw,17px);color:white;font-family:inherit;outline:none;min-width:0}
+.name-input{flex:1;background:rgba(255,255,255,.08);border:2px solid rgba(255,215,0,.5);
+  border-radius:12px;padding:9px 13px;font-size:clamp(15px,3.5vw,17px);color:white;
+  font-family:inherit;outline:none;min-width:0;-webkit-appearance:none}
 .name-input::placeholder{color:rgba(255,255,255,.3)}
 .name-input:focus{border-color:#ffd700;background:rgba(255,255,255,.11)}
 .btn-save{background:#ffd700;color:#0a1628;border:none;border-radius:12px;padding:9px 16px;
-  font-size:clamp(14px,3vw,16px);font-weight:900;font-family:inherit;cursor:pointer;white-space:nowrap;min-height:42px}
+  font-size:clamp(14px,3vw,16px);font-weight:900;font-family:inherit;cursor:pointer;
+  white-space:nowrap;min-height:42px;flex-shrink:0}
 .btn-save:active{transform:scale(.92)}
-/* leaderboard */
-.lb-wrap{width:100%;max-width:360px;padding:0 16px}
-.lb-title{font-size:11px;color:#7ecfff;letter-spacing:3px;text-align:center;margin-bottom:5px}
-.lb-list{width:100%;border-collapse:collapse}
-.lb-list tr{border-bottom:1px solid rgba(255,215,0,.1)}
-.lb-list td{padding:4px 5px;font-size:clamp(12px,2.6vw,14px);color:white}
-.lb-list td:first-child{width:26px;text-align:center;font-weight:900;color:#7ecfff}
-.lb-list td:nth-child(3){text-align:right;font-weight:900;color:#ffd700;white-space:nowrap}
-.lb-list tr.lb-me td{background:rgba(255,215,0,.09)}
-.lb-list tr.lb-me td:first-child{color:#ff6b35}
-.lb-list tr.lb-me td:nth-child(2){color:#ffd700}
+/* leaderboard wrapper */
+.lb-wrap{width:100%;max-width:380px;padding:0 12px;box-sizing:border-box;margin-bottom:4px}
+.lb-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0 4px}
+.lb-header-title{font-size:13px;font-weight:900;color:#ffd700;letter-spacing:2px;flex:1;text-align:center}
+/* table */
+.lb-list{width:100%;border-collapse:collapse;background:rgba(8,18,35,.7);
+  border-radius:14px;overflow:hidden;border:1px solid rgba(255,215,0,.2)}
+.lb-list thead tr{background:rgba(255,215,0,.12);border-bottom:2px solid rgba(255,215,0,.3)}
+.lb-list thead td{padding:7px 8px;font-size:11px;color:#7ecfff;letter-spacing:2px;font-weight:700}
+.lb-list thead td:first-child{text-align:center;width:36px}
+.lb-list thead td:last-child{text-align:right}
+.lb-list tbody tr{border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s}
+.lb-list tbody tr:last-child{border-bottom:none}
+.lb-list tbody td{padding:8px 8px;font-size:clamp(13px,3vw,15px);color:rgba(255,255,255,.9);vertical-align:middle}
+.lb-list tbody td:first-child{text-align:center;font-weight:900;font-size:16px;width:36px}
+.lb-list tbody td:last-child{text-align:right;font-weight:900;color:#ffd700;white-space:nowrap;font-size:clamp(13px,3vw,15px)}
+.lb-list .lb-date{font-size:10px;color:rgba(255,255,255,.35);display:block;margin-top:1px}
+/* highlight my score */
+.lb-list tbody tr.lb-me{background:rgba(255,215,0,.1)}
+.lb-list tbody tr.lb-me td:first-child{color:#ff6b35}
+.lb-list tbody tr.lb-me td:nth-child(2){color:#ffd700;font-weight:700}
+/* top 3 medals */
+.lb-list tbody tr.lb-top1{background:rgba(255,215,0,.13)}
+.lb-list tbody tr.lb-top2{background:rgba(192,192,192,.08)}
+.lb-list tbody tr.lb-top3{background:rgba(205,127,50,.08)}
+/* empty state */
+.lb-empty{text-align:center;color:rgba(255,255,255,.35);padding:20px;font-size:14px}
 </style>
 </head>
 <body>
@@ -135,24 +156,40 @@ html,body{width:100%;height:100%;overflow:hidden;touch-action:none;background:#0
 </div>
 <div id="endScreen" class="screen">
   <div class="cw" id="confettiWrap"></div>
+  <!-- trophy + title -->
   <div class="e-trophy" id="eTrophy">🏆</div>
   <div class="e-title" id="eTitle"></div>
-  <div class="e-sbox"><div class="e-sl">💰 收集金幣</div><div class="e-sn" id="eFinal">0</div><div class="e-ss">枚</div></div>
+  <!-- score box -->
+  <div class="e-sbox">
+    <div class="e-sl">💰 本次收集金幣</div>
+    <div class="e-sn" id="eFinal">0</div>
+    <div class="e-ss">枚</div>
+  </div>
   <div class="e-rank" id="eRank"></div>
   <!-- name entry -->
   <div class="name-panel" id="namePanel">
     <div class="name-label">✏️ 輸入姓名登上排行榜</div>
     <div class="name-row">
       <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="最多8個字">
-      <button class="btn-save" onclick="saveScore()">儲存</button>
+      <button class="btn-save" onclick="saveScore()">儲存 ✓</button>
     </div>
   </div>
   <!-- leaderboard -->
   <div class="lb-wrap">
-    <div class="lb-title">🏆 TOP 10 排行榜</div>
-    <table class="lb-list" id="lbTable"></table>
+    <div class="lb-header">
+      <div class="lb-header-title">🏆 SURF MASTER 排行榜 TOP 10</div>
+    </div>
+    <table class="lb-list">
+      <thead><tr>
+        <td>名次</td>
+        <td>玩家</td>
+        <td>金幣</td>
+      </tr></thead>
+      <tbody id="lbBody"></tbody>
+    </table>
   </div>
-  <div class="e-btns" style="margin-top:12px">
+  <!-- buttons -->
+  <div class="e-btns" style="margin-top:14px">
     <button class="btn-retry" onclick="startGame()">🏄 再衝一次！</button>
     <button class="btn-home" onclick="goHome()">🏠 回主畫面</button>
   </div>
@@ -691,17 +728,23 @@ function saveLB(lb){
 }
 function renderLB(highlightIdx){
   var lb=loadLB();
-  var tbl=document.getElementById('lbTable');
-  if(!lb.length){ tbl.innerHTML='<tr><td colspan="3" style="text-align:center;color:rgba(255,255,255,.4);padding:10px">還沒有紀錄，快來挑戰！</td></tr>'; return; }
+  var tbody=document.getElementById('lbBody');
+  if(!lb.length){
+    tbody.innerHTML='<tr><td colspan="3" class="lb-empty">還沒有紀錄，快來挑戰！</td></tr>';
+    return;
+  }
   var medals=['🥇','🥈','🥉'];
-  tbl.innerHTML=lb.map(function(e,i){
-    var cls=(i===highlightIdx)?'lb-me':'';
-    var rank=medals[i]||(i+1);
-    var name=e.name||'匿名'; 
-    // escape HTML
-    name=name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    var date=e.date||'';
-    return '<tr class="'+cls+'"><td>'+rank+'</td><td>'+name+'<br><span style="font-size:10px;opacity:.45">'+date+'</span></td><td>'+e.score+'枚</td></tr>';
+  var topCls=['lb-top1','lb-top2','lb-top3'];
+  tbody.innerHTML=lb.map(function(e,i){
+    var cls=(i===highlightIdx)?'lb-me ':(topCls[i]||'');
+    var rankIcon=medals[i]||('<span style="color:rgba(255,255,255,.5)">'+(i+1)+'</span>');
+    var name=(e.name||'匿名').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    var date=e.date?'<span class="lb-date">'+e.date+'</span>':'';
+    return '<tr class="'+cls+'">'
+      +'<td>'+rankIcon+'</td>'
+      +'<td>'+name+date+'</td>'
+      +'<td>'+e.score+' 枚</td>'
+      +'</tr>';
   }).join('');
 }
 
